@@ -2,7 +2,6 @@ modules:
   jira:issuePanel:
     - key: engagement-panel
       function: panel
-<<<<<<< HEAD
       title: Jira Issue Engagement
       icon: https://developer.atlassian.com/platform/forge/images/icons/issue-panel-icon.svg
   jira:projectPage:
@@ -22,16 +21,3 @@ permissions:
 app:
   id: ari:cloud:ecosystem::app/f0c9649c-c65a-4cb2-a8ca-5a9eac5e7c39  
   name: node20.x
-=======
-      title: Issue Engagement
-      icon: https://developer.atlassian.com/platform/forge/images/icons/issue-panel-icon.svg
-  function:
-    - key: panel
-      handler: index.panel
-permissions:
-  scopes:
-  - 'read:jira-work'
-  - 'write:jira-work'
-app:
-  id: ari:cloud:ecosystem::app/c89bfe4e-3ed0-4e09-8253-13527518fe9f
->>>>>>> ac5df6d61fc6846fc5c6914d75daa7536706415e

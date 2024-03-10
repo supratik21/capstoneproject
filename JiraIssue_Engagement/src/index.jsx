@@ -1,13 +1,6 @@
-<<<<<<< HEAD
 import ForgeUI, { render, Fragment, Text, IssuePanel, useProductContext, useState, ProjectPage, Table, Head, Body, Row, Cell, useEffect } from '@forge/ui';
 import api, {route} from '@forge/api';
 
-=======
-import ForgeUI, { render, Fragment, Text, IssuePanel, useProductContext, useState } from '@forge/ui';
-import api, {route} from '@forge/api';
-
-
->>>>>>> ac5df6d61fc6846fc5c6914d75daa7536706415e
 const fetchNumberOfComments = async function(issueKey){
   const response = await api.asApp().requestJira(route `/rest/api/3/issue/${issueKey}/comment`);
   //const data = await response.json();
@@ -26,7 +19,6 @@ const fetchNumberOfComments = async function(issueKey){
   }
 }
 
-<<<<<<< HEAD
 const fetchIssuesWithNumberOfComments = async function(projectKey){
   const jql = `project in (${projectKey})`;
   const output = [];
@@ -53,9 +45,6 @@ const fetchIssuesWithNumberOfComments = async function(projectKey){
     }
 }
 
-=======
->>>>>>> ac5df6d61fc6846fc5c6914d75daa7536706415e
-
 const EngagementPanel = () => {
   console.log(JSON.stringify(useProductContext()));
   const {platformContext:{issueKey}} = useProductContext();
@@ -72,7 +61,7 @@ export const panel = render(
     <EngagementPanel />
   </IssuePanel>
 );
-<<<<<<< HEAD
+
 
 
 
@@ -109,5 +98,4 @@ export const engagementOverview = render(
     <EngagementOverview/>
   </ProjectPage>
 );
-=======
->>>>>>> ac5df6d61fc6846fc5c6914d75daa7536706415e
+
