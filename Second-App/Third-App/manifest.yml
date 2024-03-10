@@ -1,0 +1,11 @@
+modules:
+  jira:issuePanel:
+    - key: third-app-hello-world-panel
+      function: main
+      title: Third App
+      icon: https://developer.atlassian.com/platform/forge/images/icons/issue-panel-icon.svg
+  function:
+    - key: main
+      handler: index.run
+app:
+  id: ari:cloud:ecosystem::app/35623153-11ef-42a3-b0b2-f48ddc92cf3c
