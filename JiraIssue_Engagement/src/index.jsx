@@ -69,26 +69,25 @@ const EngagementOverview = () => {
   const {platformContext:{projectKey}} = useProductContext();
   //const [output] = useState(fetchIssuesWithNumberOfComments(projectKey));
   const [output] = useState(async () => await fetchIssuesWithNumberOfComments(projectKey));
-  // const tableRows = output.map((issue, index) => (
-  // <Row key={index}>
-  //       <Cell><Text>{issue['Issue Key']}</Text></Cell>
-  //       <Cell><Text>{issue['Summary']}</Text></Cell>
-        
-  //   </Row>
-  // ));
+  const tableRows = output.map((issue, index) => (
+  <Row key={index}>
+    <Cell><Text>{issue['Issue ID']}</Text></Cell>
+    <Cell><Text>{issue['Summary']}</Text></Cell>
+    <Cell><Text>{issue['NumComments']}</Text></Cell>
+    
+  </Row>
+  ));
   return (
     <Fragment>
-      <Text>Output: "Hello"</Text>
       <Text>Output: {JSON.stringify(output)}</Text>
-      {/* <Table>
+      <Table>
         <Head>
           <Cell><Text>Issue Key:</Text></Cell>
           <Cell><Text>Summary:</Text></Cell>
-          
+          <Cell><Text>No of Comments</Text></Cell>
         </Head>
         {tableRows}
       </Table>
-      <Text>Final Output: {output}</Text> */}
     </Fragment>
   );
 };
