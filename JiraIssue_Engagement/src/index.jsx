@@ -79,7 +79,7 @@ const EngagementOverview = () => {
   ));
   return (
     <Fragment>
-      <Text>Output: {JSON.stringify(output)}</Text>
+      {/* <Text>Output: {JSON.stringify(output)}</Text> */}
       <Table>
         <Head>
           <Cell><Text>Issue Key:</Text></Cell>
