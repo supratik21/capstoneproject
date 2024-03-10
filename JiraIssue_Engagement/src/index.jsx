@@ -84,7 +84,7 @@ const EngagementOverview = () => {
         <Head>
           <Cell><Text>Issue Key:</Text></Cell>
           <Cell><Text>Summary:</Text></Cell>
-          <Cell><Text>No of Comments</Text></Cell>
+          <Cell><Text>Number of Comments</Text></Cell>
         </Head>
         {tableRows}
       </Table>
