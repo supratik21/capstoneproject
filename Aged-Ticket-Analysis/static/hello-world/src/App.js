@@ -7,19 +7,55 @@ import DynamicTable from '@atlaskit/dynamic-table';
 function App() {
     const [agedTicketData, setAgedTicketData] = useState([]);
     const [agedTicketChartData, setAgedTicketChartData] = useState([]);
+    const [agedTicketByAssignee, setAgedTicketByAssignee] = useState([]);
 
     useEffect(() => {
         Promise.all([
             invoke('getAgedTicket', { example: 'my-invoke-variable' }),
-            invoke('getAgedTicketChartData', { example: 'my-invoke-variable' })
-        ]).then(([agedTicketResponse, chartDataResponse]) => {
+            invoke('getAgedTicketChartData', { example: 'my-invoke-variable' }),
+            invoke('getAgedTicketByAssignee', { example: 'my-invoke-variable' }),
+        ]).then(([agedTicketResponse, chartDataResponse, perAssigneeResponse]) => {
             setAgedTicketData(agedTicketResponse);
             setAgedTicketChartData(chartDataResponse);
+            setAgedTicketByAssignee(perAssigneeResponse);
         }).catch(error => {
             console.error('Error fetching data:', error);
             // Set an error state or display an error message to the user
         });
     }, []);
+
+    useEffect(() => {
+        if (agedTicketByAssignee.length > 0) {
+            const assigneeNames = agedTicketByAssignee.map(data => data.assignee);
+            const ticketCounts = agedTicketByAssignee.map(data => data.count);
+    
+            const pieChartCtx = document.getElementById('assigneePieChart').getContext('2d');
+            new Chart(pieChartCtx, {
+                type: 'pie',
+                data: {
+                    labels: assigneeNames,
+                    datasets: [{
+                        data: ticketCounts,
+                        backgroundColor: [
+                            // Add as many colors as you have assignees
+                            'red', 'blue', 'green', 'yellow', 'purple', 'orange', 'cyan'
+                        ],
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                        }
+                    }
+                },
+            });
+        }
+    }, [agedTicketByAssignee]);
 
     useEffect(() => {
         if (agedTicketChartData.length > 0) {
@@ -73,7 +109,6 @@ function App() {
 
     return (
         <div>
-            <h2>Aged Ticket Manage Console</h2>
             <table className="aui">
                 <thead>
                     <tr>
@@ -83,33 +118,43 @@ function App() {
                 </thead>
                 <tbody>
                     <tr>
-                        <td headers="last_month">Last Month</td>
-                        <td headers="count_last_month">{agedTicketData.length > 0 ? agedTicketData[0].last_month : '0'}</td>
+                        <td headers="last_month">Last 30 days</td>
+                        <td headers="count_last_month">{agedTicketData.length > 0 ? agedTicketData[0].last_month : "Loading..."}</td>
                     </tr>
                     <tr>
                         <td headers="last_one_to_three_months">Last 1-3 months</td>
-                        <td headers="count_last_one_to_three_months">{agedTicketData.length > 0 ? agedTicketData[0].last_one_to_three_months : '0'}</td>
+                        <td headers="count_last_one_to_three_months">{agedTicketData.length > 0 ? agedTicketData[0].last_one_to_three_months : "Loading..."}</td>
                     </tr>
                     <tr>
                         <td headers="last_three_to_six_month">Last 3-6 months</td>
-                        <td headers="count_last_three_to_six_month">{agedTicketData.length > 0 ? agedTicketData[0].last_three_to_six_month : '0'}</td>
+                        <td headers="count_last_three_to_six_month">{agedTicketData.length > 0 ? agedTicketData[0].last_three_to_six_month : "Loading..."}</td>
                     </tr>
                     <tr>
                         <td headers="last_six_to_nine_months">Last 6-9 months</td>
-                        <td headers="count_last_six_to_nine_months">{agedTicketData.length > 0 ? agedTicketData[0].last_six_to_nine_months : '0'}</td>
+                        <td headers="count_last_six_to_nine_months">{agedTicketData.length > 0 ? agedTicketData[0].last_six_to_nine_months : "Loading..."}</td>
                     </tr>
                     <tr>
                         <td headers="more_than_nine_months">More than 9 months</td>
-                        <td headers="count_more_than_nine_months">{agedTicketData.length > 0 ? agedTicketData[0].more_than_nine_months : '0'}</td>
+                        <td headers="count_more_than_nine_months">{agedTicketData.length > 0? agedTicketData[0].more_than_nine_months : "Loading..."}</td>
                     </tr>
                 </tbody>
             </table>
-            <div>
-                <canvas id="myChart" style={{ width: '100%', maxWidth: '600px' }}></canvas>
+            <div style={{ height: '20px' }}></div> 
+            <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
+                <div style={{ flex: 2 }}>
+                    <h3>Aged Ticket Chart</h3>
+                    <div style={{ height: '20px' }}></div> 
+                    <canvas id="myChart" style={{ width: '100%', maxWidth: '800px' }}></canvas>
+                </div>
+                <div style={{ flex: 1 }}>
+                    <h3>Tickets per Assignee</h3>
+                    <div style={{ height: '20px' }}></div> 
+                    <canvas id="assigneePieChart" style={{ width: '100%', maxWidth: '400px' }}></canvas>
+                </div>
             </div>
-            {agedTicketChartData.length > 0 ? agedTicketChartData[0].open_last_month : 'Loading...'}
         </div>
     );
+    
 }
 
 export default App;

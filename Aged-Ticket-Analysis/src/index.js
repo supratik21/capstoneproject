@@ -3,6 +3,47 @@ import api, { route } from '@forge/api';
 
 const resolver = new Resolver();
 
+const getAgedTicketCountPerAssignee = async (projectKey) => {
+    const jql = `project = ${projectKey} AND status NOT IN ("Done","Completed","Resolved", "Closed") AND assignee is not EMPTY`;
+    let startAt = 0;
+    const maxResults = 50; // Smaller batch size for demonstration
+    let isFetching = true;
+    const assigneeCounts = {};
+
+
+    while (isFetching) {
+        const response = await api.asApp().requestJira(route`/rest/api/3/search?jql=${jql}&startAt=${startAt}&maxResults=${maxResults}&fields=assignee`);
+        if (!response.ok) {
+            throw new Error(`Request failed with status ${response.status}`);
+        }
+        const jsonResponse = await response.json();
+        jsonResponse.issues.forEach(issue => {
+            const assigneeName = issue.fields.assignee.displayName;
+            if (assigneeCounts[assigneeName]) {
+                assigneeCounts[assigneeName] += 1;
+            } else {
+                assigneeCounts[assigneeName] = 1;
+            }
+        });
+
+
+        startAt += jsonResponse.issues.length;
+        if (startAt >= jsonResponse.total) {
+            isFetching = false;
+        }
+    }
+
+
+    return Object.entries(assigneeCounts).map(([assignee, count]) => ({ assignee, count }));
+};
+
+resolver.define('getAgedTicketByAssignee', async (req) => {
+    const projectKey = req.context.extension.project.key;
+    const AgedTicketPerAssignee = await getAgedTicketCountPerAssignee(projectKey);
+    console.info("Aged ticket per assignee : ",AgedTicketPerAssignee);
+    return AgedTicketPerAssignee;
+
+});
 
 resolver.define('getAgedTicket', async (req) => {
     console.log(req);
