@@ -1,0 +1,16 @@
+modules:
+  jira:projectPage:
+    - key: aged-ticket-management-hello-world-project-page
+      function: main
+      title: Aged Ticket Management
+  function:
+    - key: main
+      handler: index.run
+app:
+  id: ari:cloud:ecosystem::app/d620bce4-d2ba-452f-a506-d180d21f5745
+permissions:
+  scopes:
+    - read:jira-work
+    - write:jira-work
+
+
