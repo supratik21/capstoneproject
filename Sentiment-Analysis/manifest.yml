@@ -1,0 +1,15 @@
+modules:
+  jira:issuePanel:
+    - key: sentiment-analysis-hello-world-panel
+      function: main
+      title: Sentiment Analysis
+      icon: https://developer.atlassian.com/platform/forge/images/icons/issue-panel-icon.svg
+  function:
+    - key: main
+      handler: index.run
+app:
+  id: ari:cloud:ecosystem::app/14fefbe2-4544-420b-9cb0-b512152392d6
+permissions:
+  scopes:
+    - write:jira-work
+    - read:jira-work
