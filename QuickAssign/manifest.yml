@@ -1,0 +1,24 @@
+modules:
+  jira:issueAction:
+    - key: quickassign-hello-world-issue-action
+      resource: main
+      resolver:
+        function: resolver
+      viewportSize: medium
+      title: Quick Assign
+  function:
+    - key: resolver
+      handler: index.handler
+resources:
+  - key: main
+    path: static/hello-world/build
+app:
+  id: ari:cloud:ecosystem::app/697c2e88-2645-4804-8f94-e928f8ed724c
+permissions:
+  scopes:
+    - write:jira-work
+    - read:jira-work
+  external:
+    fetch:
+      backend:
+        - https://api.nlpcloud.io
