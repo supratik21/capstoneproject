@@ -12,6 +12,11 @@ resources:
   - key: main
     path: static/hello-world/build
 permissions:
+  content:
+    scripts:
+      - unsafe-inline
+    styles:
+      - unsafe-inline
   scopes:
     - read:jira-work
     - write:jira-work
