@@ -1,0 +1,22 @@
+modules:
+  jira:projectPage:
+    - key: sla-dashboard-hello-world-project-page
+      resource: main
+      resolver:
+        function: resolver
+      title: SLA Dashboard
+  function:
+    - key: resolver
+      handler: index.handler
+resources:
+  - key: main
+    path: static/hello-world/build
+app:
+  id: ari:cloud:ecosystem::app/d73452b4-530a-49c3-916a-59bd70b13cd6
+permissions:
+  scopes:
+    - read:servicedesk-request
+    - write:jira-work
+    - read:jira-work
+    - 'storage:app'
+
