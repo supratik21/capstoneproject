@@ -45,7 +45,7 @@ const fetchIssuesWithNumberOfComments = async function(projectKey){
     //const jql = `project = ${projectKey} AND issuetype = Bug`;
     // Construct the JQL query to retrieve bugs created in the last 6 months
     //const jql = `project = ${projectKey} AND issuetype in (Bug, "[System] Incident") AND created >= "${startDateFormatted}"`;
-    const jql = `project = ${projectKey} AND issuetype in ("Bug", "[System] Incident")`;
+    const jql = `project = ${projectKey} AND issuetype in ("Bug", "[System] Incident", "Incident")`;
     
     while (isFetching) {
     	const response = await api.asApp().requestJira(route `/rest/api/3/search?jql=${jql}&startAt=${startAt}&maxResults=${maxResults}`);
@@ -84,7 +84,7 @@ const fetchIssuesWithNumberOfComments = async function(projectKey){
 };
 
 const getBugCountPerAssignee = async (projectKey) => {
-    const jql = `project = ${projectKey} AND issuetype in ("Bug", "[System] Incident") AND assignee is not EMPTY`;
+    const jql = `project = ${projectKey} AND status NOT IN ("Done","Completed","Resolved", "Closed") AND assignee is not EMPTY`;
     let startAt = 0;
     const maxResults = 50; // Smaller batch size for demonstration
     let isFetching = true;
@@ -134,7 +134,7 @@ const getIssuesPerMonth = async (projectKey) => {
         const endDate = lastDayOfMonth.toISOString().split('T')[0];
 
         // Construct the JQL query
-        const jql = `project = ${projectKey} AND issuetype in ("Bug", "[System] Incident") AND created >= "${startDate}" AND created <= "${endDate}"`;
+        const jql = `project = ${projectKey} AND status NOT IN ("Done","Completed","Resolved", "Closed") AND created >= "${startDate}" AND created <= "${endDate}"`;
 
         // Make API request
         const response = await api.asApp().requestJira(route `/rest/api/3/search?jql=${jql}`);
@@ -172,7 +172,7 @@ const getResolvedIssuesPerMonth = async (projectKey) => {
         const endDate = lastDayOfMonth.toISOString().split('T')[0];
 
         // Construct the JQL query to filter resolved issues
-        const jql = `project = ${projectKey} AND issuetype in ("Bug", "[System] Incident") AND resolutiondate >= "${startDate}" AND resolutiondate <= "${endDate}" AND status in (Resolved, Closed, Done, Completed)`;
+        const jql = `project = ${projectKey} AND issuetype in ("Bug", "[System] Incident", "Incident") AND resolutiondate >= "${startDate}" AND resolutiondate <= "${endDate}" AND status in (Resolved, Closed, Done, Completed)`;
         console.info("Checking jql query for reslolved issues per month : ", jql);
         // Make API request
         const response = await api.asApp().requestJira(route `/rest/api/3/search?jql=${jql}`);
@@ -235,7 +235,7 @@ resolver.define('getBugsCountPerMonth', async (req) => {
         const lastDayOfMonth = date.toISOString().split('T')[0];
 
         // Construct JQL query
-        const jql = `project = ${projectKey} AND issuetype in ("Bug", "[System] Incident") AND created >= "${firstDayOfMonth}" AND created <= "${lastDayOfMonth}"`;
+        const jql = `project = ${projectKey} AND status NOT IN ("Done","Completed","Resolved", "Closed") AND created >= "${firstDayOfMonth}" AND created <= "${lastDayOfMonth}"`;
         
         // Make API request
         const response = await api.asApp().requestJira(route`/rest/api/3/search?jql=${jql}`);
