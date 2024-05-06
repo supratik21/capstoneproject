@@ -3,77 +3,74 @@ import { invoke, view } from '@forge/bridge';
 
 function App() {
   const [data, setData] = useState(null);
-  const [classifier, setClassifier] = useState(null);
-  
+  const [classifier, setClassifier] = useState({ body: [] });
+  const [assignmentMessage, setAssignmentMessage] = useState('');
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
+    setLoading(true);
     invoke('getText', { example: 'my-invoke-variable' }).then(setData);
-    invoke('classifyComponent', { example: 'my-invoke-variable' }).then(setClassifier);
+    invoke('classifyComponent', { example: 'my-invoke-variable' }).then(response => {
+      setClassifier(response);
+      setLoading(false);
+    });
   }, []);
 
   const renderTableRows = () => {
-    if (classifier && classifier.body && classifier.body.labels && classifier.body.scores) {
-      // Combine labels and scores into an array of objects to sort by score
-      const combinedData = classifier.body.labels.map((label, index) => ({
-        label,
-        score: classifier.body.scores[index]
+    if (loading) {
+      return <tr><td colSpan="3" style={{ textAlign: 'center' }}>Loading data...</td></tr>;
+    }
+    else if (classifier.body && classifier.body.length > 0) {
+      const combinedData = classifier.body.map(item => ({
+        label: item.name, 
+        score: item.probability,
+        accountId: item.accountId
       }));
-
-      // Sort the combined data by score in descending order
       combinedData.sort((a, b) => b.score - a.score);
-
-      // Return table rows from the sorted data
       return combinedData.map((item, index) => (
         <tr key={index}>
           <td style={{ textAlign: 'center' }}>{item.label}</td>
           <td style={{ textAlign: 'center' }}>{item.score.toFixed(3)}</td>
+          <td style={{ textAlign: 'center' }}>
+            <button 
+              style={{ padding: '5px 10px' }} 
+              onClick={() => handleAssignClick(item.accountId, item.label)}>
+              Auto Assign
+            </button>
+          </td>
         </tr>
       ));
+    }else {
+      return <tr><td colSpan="3" style={{ textAlign: 'center' }}>No data available.</td></tr>;
     }
-    return <tr><td colSpan="2" style={{ textAlign: 'center' }}>No data available.</td></tr>;
   };
 
-  // Function to handle button click for automatic assignment
-  const handleAssignClick = async () => {
-    if (!classifier || !classifier.body.labels.length) return;
-    const sortedData = classifier.body.labels.map((label, index) => ({
-      label,
-      score: classifier.body.scores[index]
-    })).sort((a, b) => b.score - a.score);
-    // Assume classifier.body.labels and classifier.body.scores are aligned and sorted
-    const topComponent = sortedData[0].label;
-    const result = await invoke('assignTicketToLead', { componentName: topComponent });
-    alert(result.body); // Show a simple alert with the result message
-  };
-
-  // Function to determine if the button should be displayed
-  const showAssignButton = () => {
-    return classifier && classifier.body && classifier.body.labels && classifier.body.scores && classifier.body.labels.length > 0;
+  const handleAssignClick = async (accountId, name) => {
+    const result = await invoke('assignTicketToLead', { accountId });
+    setAssignmentMessage(`Ticket is successfully assigned to ${name}`);
   };
 
   return (
     <div>
       <button onClick={() => view.close()}>Close</button>
-      <h3 style={{ textAlign: 'center' }}>Ranked Components by AI Classification Scores</h3>
-      {/* {component ? JSON.stringify(component) : 'Loading Components...'} */}
-      {/* {classifier ? JSON.stringify(classifier) : 'Loading Sumits Magic AI...'} */}
-      
-      {classifier ? (
+      <h3 style={{ textAlign: 'center' }}>AI Auto Assign</h3>  
+      {loading ? (
+        <p style={{ textAlign: 'center' }}>Loading predicted assignee...</p>
+      ) : (
         <table style={{ width: '100%', textAlign: 'center' }}>
           <thead>
             <tr>
-              <th style={{ textAlign: 'center' }}>Components</th>
+              <th style={{ textAlign: 'center' }}>Assignee Name</th>
               <th style={{ textAlign: 'center' }}>Score</th>
+              <th style={{ textAlign: 'center' }}>Action</th>
             </tr>
           </thead>
-          <tbody>
-            {renderTableRows()}
-          </tbody>
+          
+          {renderTableRows()}
+          
         </table>
-      ) : 'Loading classifier data...'}
-      {showAssignButton() && (
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-          <button style={{ padding: '10px 20px' }} onClick={handleAssignClick}>Assign Ticket Automatically</button>
-        </div>
+      )}
+      {assignmentMessage && (
+        <p style={{ textAlign: 'center', color: 'green', marginTop: '10px' }}>{assignmentMessage}</p>
       )}
     </div>
   );
