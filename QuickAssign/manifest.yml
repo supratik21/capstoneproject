@@ -23,4 +23,4 @@ permissions:
   external:
     fetch:
       backend:
-        -  https://81f2-103-4-238-92.ngrok-free.app
+        -  https://fcac-103-4-238-92.ngrok-free.app

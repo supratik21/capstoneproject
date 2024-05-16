@@ -14,13 +14,12 @@ resolver.define('classifyComponent', async (req) => {
     return { body: `Error fetching issue details: ${errorText}` };
   }
   const issue = await response.json();
-  console.info("Issue detail response received:", JSON.stringify(issue));
+  //console.info("Issue detail response received:", JSON.stringify(issue));
   const issue_desc = issue.fields.description.content[0].content[0].text;
   console.info("Checking Issue Description : ", issue_desc);
-  console.info(issue.fields.description.content[0].content[0].text);
   const issueurl =`https://capstonegroupproject.atlassian.net/browse/${issue_key}`;
   console.info("Checking Issue Url :", issueurl);
-  const url = `https://81f2-103-4-238-92.ngrok-free.app`;
+  const url = `https://fcac-103-4-238-92.ngrok-free.app`;
 
   try {
       const classificationResponse  = await api.fetch(url, {
