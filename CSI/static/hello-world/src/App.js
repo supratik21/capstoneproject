@@ -5,7 +5,8 @@ import Chart from 'chart.js/auto';
 function App() {
     const [data, setData] = useState(null);
     const [bugsCountData, setBugsCountData] = useState([]);
-    const [bugByAssignee, setbugByAssignee] = useState([]);
+    const [cumulativeBugsCountData, setCumulativeBugsCountData] = useState([]);
+    const [bugByAssignee, setBugByAssignee] = useState([]);
     const [bugsResolvedPerMonth, setBugsResolved] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [searchTitle, setSearchTitle] = useState("");
@@ -17,12 +18,14 @@ function App() {
         Promise.all([
             invoke('getText', { example: 'my-invoke-variable' }),
             invoke('getBugsCountPerMonth', {example: 'my-invoke-variable' }),
+            invoke('getCumulativeIssuesPerMonth', { example: 'my-invoke-variable' }),
             invoke('getBugByAssignee', { example: 'my-invoke-variable' }),
             invoke('getResolvedIssues', { example: 'my-invoke-variable' }),
-        ]).then(([textResponse, bugsCountResponse, perAssigneeResponse, bugsResolvedMonthly]) => {
+        ]).then(([textResponse, bugsCountResponse, cumulativeBugsCountResponse, perAssigneeResponse, bugsResolvedMonthly]) => {
             setData(textResponse);  
             setBugsCountData(bugsCountResponse);  
-            setbugByAssignee(perAssigneeResponse);
+            setCumulativeBugsCountData(cumulativeBugsCountResponse);
+            setBugByAssignee(perAssigneeResponse);
             setBugsResolved(bugsResolvedMonthly);
         }).catch(error => {
             console.error('Error fetching data:', error);
@@ -63,7 +66,7 @@ function App() {
     }, [bugByAssignee]);
     
     useEffect(() => {
-        if (bugsCountData.length > 0 && bugsResolvedPerMonth.length > 0) {
+        if (bugsCountData.length > 0 && bugsResolvedPerMonth.length > 0 && cumulativeBugsCountData.length > 0) {
             const currentDate = new Date();
             const lastSixMonths = [];
             const monthNames = [
@@ -79,9 +82,11 @@ function App() {
 
             const yValues = bugsCountData.map(item => item.count);
             const yValue2 = bugsResolvedPerMonth.map(item => item.count);
+            const yValue3 = cumulativeBugsCountData.map(item => item.count);
             console.info("Checking yvalue2 : ", yValue2);
             const barIncident_BugColor = ["red"];
             const barResolvedColor = ["green"];
+            const lineCumulativeColor = "blue";
 
             const ctx = document.getElementById('myChart');
             new Chart(ctx, {
@@ -90,13 +95,23 @@ function App() {
                     labels: lastSixMonths,
                     datasets: [{
                         label: 'Open Issues',
+                        type: 'bar',
                         backgroundColor: barIncident_BugColor,
                         data: yValues
                     },
                     {
                         label: 'Closed Issues',
+                        type: 'bar',
                         backgroundColor: barResolvedColor,
                         data: yValue2
+                    },
+                    {
+                        label: 'Total Open Issues',
+                        type: 'line',
+                        backgroundColor: lineCumulativeColor,
+                        borderColor: lineCumulativeColor,
+                        fill: false,
+                        data: yValue3
                     }
                 ]
                 },
@@ -107,13 +122,13 @@ function App() {
                     },
                     plugins: {
                         legend: {
-                            display: false
+                            display: true
                         }
                     }
                 }
             });
         }
-    }, [bugsCountData, bugsResolvedPerMonth]);
+    }, [bugsCountData, cumulativeBugsCountData, bugsResolvedPerMonth]);
 
     useEffect(() => {
         setCurrentPage(0);
@@ -177,7 +192,7 @@ function App() {
                 </div>
 
                 <div style={{ flex: 1 }}>
-                    <h3>Issue per assignee</h3>
+                    <h3>Issue Closed per Assignee</h3>
                     <div style={{ height: '20px' }}></div> 
                     <canvas id="assigneePieChart" style={{ width: '100%', maxWidth: '400px' }}></canvas>
                 </div>
