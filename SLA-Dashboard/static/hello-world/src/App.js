@@ -45,7 +45,11 @@ function App() {
     const tableRowsForHighestPriorityOpenBreachedIssues = fetchHighestPriorityBreachedOpenDataIssues.map(({ issueKey, summary, assignee, slaTimeLeft }) => (
         <tbody>
             <tr key={issueKey}>
-                <td>{issueKey}</td>
+                <td>
+                    <a href={`https://capstonegroupproject.atlassian.net/browse/${issueKey}`} target='_blank'>
+                        {issueKey}
+                    </a>
+                </td>
                 <td>{summary}</td>
                 <td>{assignee}</td>
                 <td>{slaTimeLeft}</td>
@@ -56,7 +60,11 @@ function App() {
     const tableRowsForHighPriorityOpenBreachedIssues = fetchHighPriorityBreachedOpenDataIssues.map(({ issueKey, summary, assignee, slaTimeLeft }) => (
         <tbody>
             <tr key={issueKey}>
-                <td>{issueKey}</td>
+                <td>
+                    <a href={`https://capstonegroupproject.atlassian.net/browse/${issueKey}`} target='_blank'>
+                        {issueKey}
+                    </a>
+                </td>
                 <td>{summary}</td>
                 <td>{assignee}</td>
                 <td>{slaTimeLeft}</td>
@@ -67,7 +75,11 @@ function App() {
     const tableRowsForMediumPriorityOpenBreachedIssues = fetchMediumPriorityBreachedOpenDataIssues.map(({ issueKey, summary, assignee, slaTimeLeft }) => (
         <tbody>
             <tr key={issueKey}>
-                <td>{issueKey}</td>
+                <td>
+                    <a href={`https://capstonegroupproject.atlassian.net/browse/${issueKey}`} target='_blank'>
+                        {issueKey}
+                    </a>
+                </td>
                 <td>{summary}</td>
                 <td>{assignee}</td>
                 <td>{slaTimeLeft}</td>
@@ -78,7 +90,11 @@ function App() {
     const tableRowsForLowPriorityOpenBreachedIssues = fetchLowPriorityBreachedOpenDataIssues.map(({ issueKey, summary, assignee, slaTimeLeft }) => (
         <tbody>
             <tr key={issueKey}>
-                <td>{issueKey}</td>
+                <td>
+                    <a href={`https://capstonegroupproject.atlassian.net/browse/${issueKey}`} target='_blank'>
+                        {issueKey}
+                    </a>
+                </td>
                 <td>{summary}</td>
                 <td>{assignee}</td>
                 <td>{slaTimeLeft}</td>
@@ -89,7 +105,11 @@ function App() {
     const tableRowsForLowestPriorityOpenBreachedIssues = fetchLowestPriorityBreachedOpenDataIssues.map(({ issueKey, summary, assignee, slaTimeLeft }) => (
         <tbody>
             <tr key={issueKey}>
-                <td>{issueKey}</td>
+                <td>
+                    <a href={`https://capstonegroupproject.atlassian.net/browse/${issueKey}`} target='_blank'>
+                        {issueKey}
+                    </a>
+                </td>
                 <td>{summary}</td>
                 <td>{assignee}</td>
                 <td>{slaTimeLeft}</td>
@@ -99,7 +119,11 @@ function App() {
     const tableRowsForHighPriorityClosedBreachedIssues = fetchHighPriorityBreachedClosedDataIssues.map(({ issueKey, summary, assignee, slaTimeLeft }) => (
         <tbody>
             <tr key={issueKey}>
-                <td>{issueKey}</td>
+                <td>
+                    <a href={`https://capstonegroupproject.atlassian.net/browse/${issueKey}`} target='_blank'>
+                        {issueKey}
+                    </a>
+                </td>
                 <td>{summary}</td>
                 <td>{assignee}</td>
                 <td>{slaTimeLeft}</td>
@@ -110,7 +134,11 @@ function App() {
     const tableRowsForMediumPriorityClosedBreachedIssues = fetchMediumPriorityBreachedClosedDataIssues.map(({ issueKey, summary, assignee, slaTimeLeft }) => (
         <tbody>
             <tr key={issueKey}>
-                <td>{issueKey}</td>
+                <td>
+                    <a href={`https://capstonegroupproject.atlassian.net/browse/${issueKey}`} target='_blank'>
+                        {issueKey}
+                    </a>
+                </td>
                 <td>{summary}</td>
                 <td>{assignee}</td>
                 <td>{slaTimeLeft}</td>
@@ -121,7 +149,11 @@ function App() {
     const tableRowsForLowPriorityClosedBreachedIssues = fetchLowPriorityBreachedClosedDataIssues.map(({ issueKey, summary, assignee, slaTimeLeft }) => (
         <tbody>
             <tr key={issueKey}>
-                <td>{issueKey}</td>
+                <td>
+                    <a href={`https://capstonegroupproject.atlassian.net/browse/${issueKey}`} target='_blank'>
+                        {issueKey}
+                    </a>
+                </td>
                 <td>{summary}</td>
                 <td>{assignee}</td>
                 <td>{slaTimeLeft}</td>
@@ -132,7 +164,11 @@ function App() {
     const tableRowsForLowestPriorityClosedBreachedIssues = fetchLowestPriorityBreachedClosedDataIssues.map(({ issueKey, summary, assignee, slaTimeLeft }) => (
         <tbody>
             <tr key={issueKey}>
-                <td>{issueKey}</td>
+                <td>
+                    <a href={`https://capstonegroupproject.atlassian.net/browse/${issueKey}`} target='_blank'>
+                        {issueKey}
+                    </a>
+                </td>
                 <td>{summary}</td>
                 <td>{assignee}</td>
                 <td>{slaTimeLeft}</td>
@@ -143,7 +179,11 @@ function App() {
     const tableRowsForHighestPriorityClosedBreachedIssues = fetchHighestPriorityBreachedClosedDataIssues.map(({ issueKey, summary, assignee, slaTimeLeft }) => (
         <tbody>
             <tr key={issueKey}>
-                <td>{issueKey}</td>
+                <td>
+                    <a href={`https://capstonegroupproject.atlassian.net/browse/${issueKey}`} target='_blank'>
+                        {issueKey}
+                    </a>
+                </td>
                 <td>{summary}</td>
                 <td>{assignee}</td>
                 <td>{slaTimeLeft}</td>
@@ -154,8 +194,9 @@ function App() {
     return (
         
         <div>
+            
             <div style={{ width: '50%' }}>
-                <h3>Priority Table</h3>
+                <h3>SLA Matrix</h3>
                 <table>
                     <thead>
                         <tr>
@@ -202,7 +243,7 @@ function App() {
             </div>
             <br></br>
             <div>
-                <h3>Highest Priority SLA Breached Open Issue Details</h3>
+                <h3>Highest Priority - SLA Breached (Open Issues)</h3>
                 <table>
                     <thead>
                         <tr>
@@ -216,7 +257,7 @@ function App() {
                 </table>
             </div>
             <div>
-                <h3>Highest Priority SLA Breached Closed Issue Details</h3>
+                <h3>Highest Priority - SLA Breached (Resolved Issues)</h3>
                 <table>
                     <thead>
                         <tr>
@@ -231,7 +272,7 @@ function App() {
             </div>
 
             <div>
-                <h3>High Priority SLA Breached Open Issue Details</h3>
+                <h3>High Priority - SLA Breached (Open Issues)</h3>
                 <table>
                     <thead>
                         <tr>
@@ -245,7 +286,7 @@ function App() {
                 </table>
             </div>
             <div>
-                <h3>High Priority SLA Breached Closed Issue Details</h3>
+                <h3>High Priority - SLA Breached (Resolved Issues)</h3>
                 <table>
                     <thead>
                         <tr>
@@ -260,7 +301,7 @@ function App() {
             </div>
 
             <div>
-                <h3>Medium Priority SLA Breached Open Issue Details</h3>
+                <h3>Medium Priority - SLA Breached (Open Issues)</h3>
                 <table>
                     <thead>
                         <tr>
@@ -274,7 +315,7 @@ function App() {
                 </table>
             </div>
             <div>
-                <h3>Medium Priority SLA Breached Closed Issue Details</h3>
+                <h3>Medium Priority - SLA Breached (Resolved Issues)</h3>
                 <table>
                     <thead>
                         <tr>
@@ -289,7 +330,7 @@ function App() {
             </div>
 
             <div>
-                <h3>Low Priority SLA Breached Open Issue Details</h3>
+                <h3>Low Priority - SLA Breached (Open Issues)</h3>
                 <table>
                     <thead>
                         <tr>
@@ -303,7 +344,7 @@ function App() {
                 </table>
             </div>
             <div>
-                <h3>Low Priority SLA Breached Closed Issue Details</h3>
+                <h3>Low Priority - SLA Breached (Resolved Issues)</h3>
                 <table>
                     <thead>
                         <tr>
@@ -317,7 +358,7 @@ function App() {
                 </table>
             </div>
             <div>
-                <h3>Lowest Priority SLA Breached Open Issue Details</h3>
+                <h3>Lowest Priority - SLA Breached (Open Issues)</h3>
                 <table>
                     <thead>
                         <tr>
@@ -331,7 +372,7 @@ function App() {
                 </table>
             </div>
             <div>
-                <h3>Lowest Priority SLA Breached Closed Issue Details</h3>
+                <h3>Lowest Priority - SLA Breached (Resolved Issues)</h3>
                 <table>
                     <thead>
                         <tr>

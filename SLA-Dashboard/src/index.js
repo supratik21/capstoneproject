@@ -7,12 +7,11 @@ const fetchPriorities = async function() {
   const response = await api.asApp().requestJira(route `/rest/api/3/priority`);
   if (!response.ok) throw new Error(`Failed to fetch priorities: ${response.status} ${response.statusText}`);
   const data = await response.json();
-  //console.info("Checking fetch prioritites : ",data);
   return data;
 };
 
 const fetchIssuesByPriority = async function(projectKey, priorityName) {
-  const jql = `project = '${projectKey}' AND issuetype = '[System] Incident' AND priority = '${priorityName}'`;
+  const jql = `project = '${projectKey}' AND issuetype in ('[System] Incident', 'Incident') AND priority = '${priorityName}'`;
   const response = await api.asApp().requestJira(route `/rest/api/3/search?jql=${jql}`);
   if (!response.ok) throw new Error(`Failed to fetch issues for priority ${priorityName}: ${response.status} ${response.statusText}`);
   const data = await response.json();
@@ -21,12 +20,9 @@ const fetchIssuesByPriority = async function(projectKey, priorityName) {
 };
 
 const fetchSLADataForIssue = async (issueId) => {
-  // Assuming you know the SLA ID or can extract it from the issue's response
   const response = await api.asApp().requestJira(route`/rest/servicedeskapi/request/${issueId}/sla`);
-  //Please check why this error occurred @Sumit - optimize the code
   if (!response.ok) throw new Error(`Failed to fetch SLA data for issue ${issueId}: ${response.status} ${response.statusText}`);
   const data = await response.json();
-  //console.info("Checking fetchSLADataForIssue : ",data);
   return data;
 };
 
@@ -34,7 +30,6 @@ const fetchSLAIssues = async (projectKey, priority) => {
   const issues = await fetchIssuesByPriority(projectKey, priority);
   const slaDataPromises = issues.issues.map(issue => fetchSLADataForIssue(issue.id));
   const slaDataResults = await Promise.all(slaDataPromises);
-  // Here you could calculate metrics, like count of breached SLAs etc.
   return slaDataResults.filter(sla => sla.values.some(s => s.name === "Time to resolution" && s.ongoingCycle && s.ongoingCycle.breached === true)).length;
 };
 
@@ -51,7 +46,7 @@ resolver.define('fetchSLAData', async (req) => {
 });
 
 const fetchOpenPriorityBreachedIssues  = async (projectKey, priority) => {
-  const jql = `project = '${projectKey}' AND issuetype = '[System] Incident' AND priority = '${priority}' AND status = 'Open'`;
+  const jql = `project = '${projectKey}' AND issuetype in ('[System] Incident', 'Incident') AND priority = '${priority}' AND status = 'Open'`;
   const response = await api.asApp().requestJira(route`/rest/api/3/search?jql=${jql}&fields=summary,assignee`);
   if (!response.ok) throw new Error(`Failed to fetch ${priority} priority open issues`);
   const data = await response.json();
@@ -111,16 +106,13 @@ resolver.define('fetchLowestPriorityBreachedOpenIssuesData', async (req) => {
 });
 
 const fetchClosedPriorityBreachedIssues  = async (projectKey, priority) => {
-  const jql = `project = '${projectKey}' AND issuetype = '[System] Incident' AND priority = '${priority}' AND status in (Resolved, Closed, Done, Completed)`;
+  const jql = `project = '${projectKey}' AND issuetype in ('[System] Incident', 'Incident') AND priority = '${priority}' AND status in (Resolved, Closed, Done, Completed)`;
   const response = await api.asApp().requestJira(route`/rest/api/3/search?jql=${jql}&fields=summary,assignee`);
-  //console.info("Checking closed Issue response : ",response);
   if (!response.ok) throw new Error(`Failed to fetch closed ${priority} issues`);
   const data = await response.json();
-  //console.info("Checking closed Data : ",data);
   const details = await Promise.all(data.issues.map(async issue => {
     const slaData = await fetchSLADataForIssue(issue.id);
     const slaBreached = slaData.values.some(s => s.name === "Time to resolution" && s.completedCycles[0] && s.completedCycles[0].breached === true);
-    //console.info(slaData.values.find(sla => sla.name === "Time to resolution")?.completedCycles[0]?.remainingTime?.friendly);
     if (slaBreached) {
       return {
         issueKey: issue.key,
@@ -172,8 +164,5 @@ resolver.define('fetchLowestPriorityBreachedClosedIssuesData', async (req) => {
   console.info(`Breached ${priority} Priority Closed Issue Details: `, breachedIssueDetails);
   return breachedIssueDetails;
 });
-
-
-
 
 export const handler = resolver.getDefinitions();

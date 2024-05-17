@@ -4,7 +4,7 @@ modules:
       resource: main
       resolver:
         function: resolver
-      title: SLA Dashboard
+      title: Service Legal Agreement
   function:
     - key: resolver
       handler: index.handler
@@ -13,6 +13,8 @@ resources:
     path: static/hello-world/build
 app:
   id: ari:cloud:ecosystem::app/d73452b4-530a-49c3-916a-59bd70b13cd6
+  runtime:
+    name: nodejs18.x
 permissions:
   scopes:
     - read:servicedesk-request
