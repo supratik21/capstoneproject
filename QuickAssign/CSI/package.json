@@ -1,0 +1,20 @@
+{
+  "name": "jira-project-page-custom-ui",
+  "version": "1.0.40",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "eslint-plugin-react-hooks": "^4.6.0"
+  },
+  "dependencies": {
+    "@atlaskit/dynamic-table": "^14.16.2",
+    "@forge/api": "^3.2.0",
+    "@forge/bridge": "^3.3.0",
+    "@forge/resolver": "^1.5.28",
+    "@forge/ui": "^1.11.1",
+    "chart.js": "^4.4.2",
+    "react-chartjs-2": "^5.2.0"
+  }
+}
