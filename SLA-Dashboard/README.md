@@ -1,6 +1,6 @@
-# Forge Hello World
+# SLA Management
 
-This project contains a Forge app written in Javascript that displays `Hello World!` in a Jira project page. 
+This project contains a Forge app written in Javascript that displays `the sla management dashboard` in a Jira project page. 
 
 See [developer.atlassian.com/platform/forge/](https://developer.atlassian.com/platform/forge) for documentation and tutorials explaining Forge.
 
