@@ -1,6 +1,6 @@
-# Forge Hello World
+# DevOps Metrics
 
-This project contains a Forge app written in Javascript that displays `Hello World!` in a Jira project page. 
+This project contains a Forge app written in Javascript that displays key DevOps Metrics such as Lead Time, CFR, MTTR and Throughput of a project management team. 
 
 See [developer.atlassian.com/platform/forge/](https://developer.atlassian.com/platform/forge) for documentation and tutorials explaining Forge.
 
