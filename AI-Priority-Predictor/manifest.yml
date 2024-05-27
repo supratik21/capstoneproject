@@ -1,0 +1,27 @@
+modules:
+  jira:issuePanel:
+    - key: ai-priority-predictor-hello-world-panel
+      resource: main
+      resolver:
+        function: resolver
+      viewportSize: medium
+      title: AI Priority Predictor
+      icon: https://developer.atlassian.com/platform/forge/images/issue-panel-icon.svg
+  function:
+    - key: resolver
+      handler: index.handler
+resources:
+  - key: main
+    path: static/hello-world/build
+permissions:
+  scopes:
+    - read:jira-work
+    - write:jira-work
+  external:
+    fetch:
+      backend:
+        - 'https://a972-103-4-238-92.ngrok-free.app'
+app:
+  id: ari:cloud:ecosystem::app/c6250113-70d0-4a90-a5a4-db11c80e2df3
+  runtime: 
+    name: nodejs18.x
